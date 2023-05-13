@@ -24,10 +24,10 @@ model Customer {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  Name      String    @db.VarChar(255)
-  Email     String    @db.VarChar(255)
-  Birthdate DateTime  @db.Date
-  Address   String?   @db.VarChar(255)
+  name      String    @db.VarChar(255)
+  email     String    @db.VarChar(255)
+  birthdate DateTime  @db.Date
+  address   String?   @db.VarChar(255)
   vehicle   Vehicle[]
 }
 
@@ -36,8 +36,8 @@ model Vehicle {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deleted      Boolean   @default(false)
-  PlateLicense String    @db.VarChar(255)
-  Observations String?   @db.LongText
+  plateLicense String    @db.VarChar(255)
+  observations String?   @db.LongText
   receipt      Receipt[]
 
   CarBrand   CarBrand? @relation(fields: [carBrandId], references: [id])
@@ -46,8 +46,8 @@ model Vehicle {
   carModelId String?
   CarColor   CarColor? @relation(fields: [carColorId], references: [id])
   carColorId String?
-  Customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?
+  Customer   Customer  @relation(fields: [customerId], references: [id])
+  customerId String
 }
 
 model CarBrand {
@@ -55,7 +55,7 @@ model CarBrand {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  Name      String    @db.VarChar(255)
+  name      String    @db.VarChar(255)
   vehicles  Vehicle[]
 }
 
@@ -64,7 +64,7 @@ model CarModel {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  Name      String    @db.VarChar(255)
+  name      String    @db.VarChar(255)
   vehicles  Vehicle[]
 }
 
@@ -73,7 +73,7 @@ model CarColor {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  Name      String    @db.VarChar(255)
+  name      String    @db.VarChar(255)
   vehicles  Vehicle[]
 }
 
@@ -83,11 +83,21 @@ model Receipt {
   updatedAt DateTime @updatedAt
   deleted   Boolean  @default(false)
   date      DateTime @default(now())
-  items     Item[]
   total     Int      @db.Int
 
-  Vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
-  vehicleId String?
+  Vehicle      Vehicle        @relation(fields: [vehicleId], references: [id])
+  vehicleId    String
+  ReceiptItems ReceiptItems[]
+}
+
+model ReceiptItems {
+  receipt   Receipt @relation(fields: [receiptId], references: [id])
+  receiptId String
+
+  items  Item   @relation(fields: [itemId], references: [id])
+  itemId String
+
+  @@id([receiptId, itemId])
 }
 
 model Item {
@@ -95,9 +105,9 @@ model Item {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   deleted     Boolean  @default(false)
-  Name        String   @db.VarChar(255)
-  Price       String   @db.VarChar(255)
-  Description String?  @db.LongText
-  Receipt     Receipt? @relation(fields: [receiptId], references: [id])
-  receiptId   String?
+  name        String   @db.VarChar(255)
+  price       String   @db.VarChar(255)
+  description String?  @db.LongText
+
+  ReceiptItems ReceiptItems[]
 }

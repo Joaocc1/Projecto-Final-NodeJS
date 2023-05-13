@@ -1,5 +1,6 @@
 import env from "dotenv";
 import express from "express";
+import router from "./routes";
 
 env.config(); // This line loads environment variables from a .env file if it exists in the project directory
 
@@ -8,6 +9,10 @@ const port = process.env.PORT || 3000; // This line sets the port for the server
 
 app.use(express.json()); // This line sets up the Express application to parse JSON request bodies.
 
+app.use(router); // This line registers the router to handle all incoming requests. The router is responsible for defining the endpoints and their associated controller functions.
+
 app.listen(port, () =>
   console.log(`Server listening on http://localhost:${port}`)
 ); // This line starts the server and listens for incoming requests on the specified port. When the server is ready to accept connections, it logs a message to the console.
+
+// Overall, this code sets up an Express application with middleware functions that log incoming requests to the console, verify JWT tokens, and define endpoints for handling requests.
