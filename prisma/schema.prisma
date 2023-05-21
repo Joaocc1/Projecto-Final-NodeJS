@@ -26,7 +26,7 @@ model Customer {
   deleted   Boolean   @default(false)
   name      String    @db.VarChar(255)
   email     String    @db.VarChar(255)
-  birthdate DateTime  @db.Date
+  birthdate String    @db.VarChar(255)
   address   String?   @db.VarChar(255)
   vehicle   Vehicle[]
 }

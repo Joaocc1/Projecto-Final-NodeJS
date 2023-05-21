@@ -31,7 +31,7 @@ const add = (
   });
 
 const update = (id: string, customer: Customer) =>
-  prisma.item.update({
+  prisma.customer.update({
     where: { id },
     data: customer,
   });

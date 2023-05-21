@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import authRoutes from "./auth";
 import vehicleRoutes from "./vehicle";
 import receiptRoutes from "./receipt";
 import itemsRoutes from "./items";
@@ -17,6 +18,7 @@ router.get("/", (req: Request, res: Response) =>
   })
 );
 
+router.use("/auth", authRoutes);
 router.use("/vehicle", vehicleRoutes);
 router.use("/receipt", receiptRoutes);
 router.use("/items", itemsRoutes);

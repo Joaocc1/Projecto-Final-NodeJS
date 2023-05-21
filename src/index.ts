@@ -1,6 +1,7 @@
 import env from "dotenv";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import router from "./routes";
+import { verifyToken } from "./middleware/token";
 
 env.config(); // This line loads environment variables from a .env file if it exists in the project directory
 
@@ -8,6 +9,20 @@ const app = express(); // This line creates a new instance of the Express applic
 const port = process.env.PORT || 3000; // This line sets the port for the server to run on. It uses the environment variable PORT if it exists, otherwise defaults to 3000.
 
 app.use(express.json()); // This line sets up the Express application to parse JSON request bodies.
+
+const requestLogger = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  console.log(`[${request.method}] => url:: ${request.url}`);
+
+  next();
+};
+
+app.use(requestLogger);
+
+app.use(verifyToken);
 
 app.use(router); // This line registers the router to handle all incoming requests. The router is responsible for defining the endpoints and their associated controller functions.
 
