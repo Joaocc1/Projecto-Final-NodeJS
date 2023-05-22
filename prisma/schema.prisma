@@ -29,6 +29,7 @@ model Customer {
   birthdate String    @db.VarChar(255)
   address   String?   @db.VarChar(255)
   vehicle   Vehicle[]
+  Receipt   Receipt[]
 }
 
 model Vehicle {
@@ -40,10 +41,10 @@ model Vehicle {
   observations String?   @db.LongText
   receipt      Receipt[]
 
-  CarBrand   CarBrand? @relation(fields: [carBrandId], references: [id])
-  carBrandId String?
-  CarModel   CarModel? @relation(fields: [carModelId], references: [id])
-  carModelId String?
+  CarBrand   CarBrand  @relation(fields: [carBrandId], references: [id])
+  carBrandId String
+  CarModel   CarModel  @relation(fields: [carModelId], references: [id])
+  carModelId String
   CarColor   CarColor? @relation(fields: [carColorId], references: [id])
   carColorId String?
   Customer   Customer  @relation(fields: [customerId], references: [id])
@@ -85,29 +86,34 @@ model Receipt {
   date      DateTime @default(now())
   total     Int      @db.Int
 
-  Vehicle      Vehicle        @relation(fields: [vehicleId], references: [id])
-  vehicleId    String
-  ReceiptItems ReceiptItems[]
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+
+  Vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+  vehicleId String
+  items     Item[]
+  // ReceiptItems ReceiptItems[]
 }
 
-model ReceiptItems {
-  receipt   Receipt @relation(fields: [receiptId], references: [id])
-  receiptId String
+// model ReceiptItems {
+//   receipt   Receipt @relation(fields: [receiptId], references: [id])
+//   receiptId String
 
-  items  Item   @relation(fields: [itemId], references: [id])
-  itemId String
+//   items  Item   @relation(fields: [itemId], references: [id])
+//   itemId String
 
-  @@id([receiptId, itemId])
-}
+//   @@id([receiptId, itemId])
+// }
 
 model Item {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deleted     Boolean  @default(false)
-  name        String   @db.VarChar(255)
-  price       String   @db.VarChar(255)
-  description String?  @db.LongText
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deleted     Boolean   @default(false)
+  name        String    @db.VarChar(255)
+  price       String    @db.VarChar(255)
+  description String?   @db.LongText
+  receipts    Receipt[]
 
-  ReceiptItems ReceiptItems[]
+  // ReceiptItems ReceiptItems[]
 }
