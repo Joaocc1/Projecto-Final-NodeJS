@@ -6,8 +6,8 @@ export default async (request: Request, response: Response) => {
     plateLicense,
     carBrandId,
     carModelId,
-    carColorId,
     customerId,
+    carColorId,
     observations,
   } = request.body;
 
@@ -15,8 +15,8 @@ export default async (request: Request, response: Response) => {
     plateLicense,
     carBrandId,
     carModelId,
-    carColorId,
     customerId,
+    carColorId,
     observations
   );
 

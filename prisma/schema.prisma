@@ -25,7 +25,7 @@ model Customer {
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
   name      String    @db.VarChar(255)
-  email     String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
   birthdate String    @db.VarChar(255)
   address   String?   @db.VarChar(255)
   vehicle   Vehicle[]
@@ -45,10 +45,10 @@ model Vehicle {
   carBrandId String
   CarModel   CarModel  @relation(fields: [carModelId], references: [id])
   carModelId String
-  CarColor   CarColor? @relation(fields: [carColorId], references: [id])
-  carColorId String?
   Customer   Customer  @relation(fields: [customerId], references: [id])
   customerId String
+  CarColor   CarColor? @relation(fields: [carColorId], references: [id])
+  carColorId String?
 }
 
 model CarBrand {
@@ -56,7 +56,7 @@ model CarBrand {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  name      String    @db.VarChar(255)
+  name      String    @unique @db.VarChar(255)
   vehicles  Vehicle[]
 }
 
@@ -65,7 +65,7 @@ model CarModel {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  name      String    @db.VarChar(255)
+  name      String    @unique @db.VarChar(255)
   vehicles  Vehicle[]
 }
 
@@ -74,7 +74,7 @@ model CarColor {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deleted   Boolean   @default(false)
-  name      String    @db.VarChar(255)
+  name      String    @unique @db.VarChar(255)
   vehicles  Vehicle[]
 }
 

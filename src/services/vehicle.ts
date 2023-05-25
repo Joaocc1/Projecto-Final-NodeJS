@@ -28,7 +28,6 @@ const add = (
   prisma.vehicle.create({
     data: {
       plateLicense,
-      observations,
       CarBrand: {
         connect: {
           id: carBrandId,
@@ -39,16 +38,19 @@ const add = (
           id: carModelId,
         },
       },
-      CarColor: {
-        connect: {
-          id: carColorId,
-        },
-      },
       Customer: {
         connect: {
           id: customerId,
         },
       },
+      ...(carColorId && {
+        CarColor: {
+          connect: {
+            id: carColorId,
+          },
+        },
+      }),
+      observations,
     },
   });
 

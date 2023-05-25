@@ -11,7 +11,8 @@ export default async (request: Request, response: Response) => {
     });
   }
 
-  const vehicle = await update(id, request.body);
+  const { itemIds, total, ...receiptData } = request.body;
+  const receipt = await update(id, receiptData, itemIds, total);
 
-  return response.json(vehicle);
+  return response.json(receipt);
 };
